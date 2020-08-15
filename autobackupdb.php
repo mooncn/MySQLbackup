@@ -39,33 +39,8 @@ try {
 }
 
 
-//Clean Overlap BackUp Files
-$dir = dirname(__FILE__);
-$file = scandir($dir);
-
-$backup_files = array();
-foreach ($file as $value) {
-
-    if (strpos($value, $db_name."_") !== false) {
-        array_push($backup_files, $value);
-    }
-}
-
-$local_backup_files_num = count($backup_files);
-
-if ($local_backup_files_num > $max_backup) {
-
-    rsort($backup_files);//Order the array for delete files;
-    for ($curr = $local_backup_files_num; $curr > $max_backup; $curr--) {
-        unlink($backup_files[$curr - 1]);
-        echo "Already Clear Old BackUp Files" . $backup_files[$curr - 1];
-    }
-}
-
-
-
 //mail deliver
-if (!$mail_deliver) exit("Mail deliver not enable");
+if (!$mail_deliver) goto cleanup;//use the goto is not vise method but useful. it will be fix soon;
 $mail = new PHPMailer(true);
 
 try {
@@ -102,4 +77,28 @@ try {
     echo 'Mail has been sent';
 } catch (Exception $e) {
     echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
+
+//Clean Overlap BackUp Files
+cleanup:
+$dir = dirname(__FILE__);
+$file = scandir($dir);
+
+$backup_files = array();
+foreach ($file as $value) {
+
+    if (strpos($value, $db_name."_") !== false) {
+        array_push($backup_files, $value);
+    }
+}
+
+$local_backup_files_num = count($backup_files);
+
+if ($local_backup_files_num > $max_backup) {
+
+    rsort($backup_files);//Order the array for delete files;
+    for ($curr = $local_backup_files_num; $curr > $max_backup; $curr--) {
+        unlink($backup_files[$curr - 1]);
+        echo "Already Clear Old BackUp Files" . $backup_files[$curr - 1];
+    }
 }

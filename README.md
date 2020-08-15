@@ -3,6 +3,7 @@ MySQL Database backup and use the file as attachment mail to an mail address
 # Description
 This Program IS a little tool for mysql database backup ande mail to some address,  
 Add Automatic delete old backup files. please edit it in config.php
+The max backup numbers perfer to set 0. in case of some one to download db files;  
 use [PHPMailer](https://github.com/PHPMailer/PHPMailer) and [MySQL-dump](https://github.com/dg/MySQL-dump) to compose.  
 lisence obey BSD-3-Clause License and LGPL-2.1 License
 # USE IT 
